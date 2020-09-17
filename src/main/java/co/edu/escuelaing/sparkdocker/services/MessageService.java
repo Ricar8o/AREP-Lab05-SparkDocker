@@ -3,6 +3,8 @@ package co.edu.escuelaing.sparkdocker.services;
 import co.edu.escuelaing.sparkdocker.Mongo.MongoServices;
 import static spark.Spark.*;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import spark.Request;
 import spark.Response;
 
@@ -13,37 +15,47 @@ import spark.Response;
 public class MessageService {
 
     MongoServices mongoServices;
+
     /**
      * Constructor
      */
     public MessageService() {
         loadToSpark();
-        mongoServices = new MongoServices("localhost", 27017);
+        mongoServices = new MongoServices("172.24.0.5", 27017);
     }
+
     /**
      * Asocia metodos a rutas en spark.
      */
     private void loadToSpark() {
-        get("/api/v1/setMessage", (req, res) -> insertMessage(req, res));
+        post("/api/v1/setMessage", (req, res) -> insertMessage(req, res));
+        get("/api/v1/getMessages", (req, res) -> getMessages(req, res));
     }
+
     /**
      * Inserta un mensaje en la base de datos.
+     * 
      * @param req Request
      * @param res Response
      * @return Todos los mensajes en formato JSON
      */
-    public JsonObject insertMessage(Request req, Response res) {
-        res.type("application/json");
-        String user = req.queryParams("user");
-        String message = req.queryParams("message");
+    public String insertMessage(Request req, Response res) {
+        JsonObject json = (JsonObject) JsonParser.parseString(req.body());
+        String user = json.get("user").getAsString();
+        String message = json.get("message").getAsString();
         mongoServices.insertMessage(user, message);
-        return getMessages();
+        return "ok";
     }
+    
     /**
      * Pide todos los mensajes en formato JSON.
+     * 
+     * @param res
+     * @param req
      * @return
      */
-    private JsonObject getMessages() {
+    private JsonObject getMessages(Request req, Response res) {
+        res.type("application/json");
         return mongoServices.getMessages();
     }
 }

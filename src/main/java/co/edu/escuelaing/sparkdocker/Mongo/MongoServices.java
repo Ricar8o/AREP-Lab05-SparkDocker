@@ -55,6 +55,7 @@ public class MongoServices {
 		while (it.hasNext()) {
             JsonObject jsonObject = new JsonObject();
             Document doc = it.next();
+            jsonObject.addProperty("Id", doc.get("_id").toString());
             jsonObject.addProperty("User", doc.get("user").toString());
             jsonObject.addProperty("Message", doc.get("content").toString());
             jArray.add(jsonObject);

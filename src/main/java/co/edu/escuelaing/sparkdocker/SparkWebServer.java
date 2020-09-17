@@ -5,8 +5,8 @@ import co.edu.escuelaing.sparkdocker.services.MessageService;
 
  
 /**
-  * web server usoing Sparkweb
-  * @author Ricar
+  * web server using Sparkweb
+  * @author Ricar8o
   */
 
  public class SparkWebServer {

@@ -1,23 +1,48 @@
 version: '2'
-
 services:
-    web:
-        build:
-            context: .
-            dockerfile: DockerFile
-        container_name: web
+    web1:
+        image: sparkdocker
+        container_name: web1
+        networks:
+            net:
+                ipv4_address: 172.24.0.2
         ports:
-            - "8087:6000"
+            - "35001:6000"
+    web2:
+        image: sparkdocker
+        container_name: web2
+        networks:
+            net:
+              ipv4_address: 172.24.0.3
+        ports:
+            - "35002:6000"
+    web3:
+        image: sparkdocker
+        container_name: web3
+        networks:
+            net:
+                ipv4_address: 172.24.0.4
+        ports:
+            - "35003:6000"
     db:
         image: mongo:3.6.1
         container_name: db
+        networks:
+            net:
+                ipv4_address: 172.24.0.5
         volumes:
             - mongodb:/data/db
             - mongodb_config:/data/configdb
         ports:
             - 27017:27017
         command: mongod
-        
+networks:
+    net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.24.0.0/16     
 volumes:
     mongodb:
     mongodb_config:
+

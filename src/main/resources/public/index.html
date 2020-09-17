@@ -2,20 +2,25 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+        <script src="apiclient.js"></script>
+        <script src="basic.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script> 
     </head>
     <body>
-        <h2>Función</h2>
-        <form action="/api/v1/insertMessage">
+        <h2>Función </h2>
+        <form  action="/api/v1/getMessages">
         Usuario:
-        <input type="text"  name="user" >
+        <input type="text" id="user" >
         <br><br>
         Mensaje: 
         <br>
-        <textarea name="message" ></textarea>
-        <br>
-         <input type="submit" value="Submit">
+        <textarea id="message" ></textarea>
+        <br><br>
+        <input type="submit" value="Ver Mensajes">
+        <input type="reset" value="Borrar información">
+
         </form>
+        <button  onclick="basic.sendMessage();return false;">Enviar</button>
           
     </body>
 </html>
