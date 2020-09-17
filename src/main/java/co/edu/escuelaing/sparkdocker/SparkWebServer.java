@@ -1,13 +1,12 @@
 package co.edu.escuelaing.sparkdocker;
  
 import static spark.Spark.*;
+import co.edu.escuelaing.sparkdocker.services.MessageService;
 
-import co.edu.escuelaing.sparkdocker.services.SparkWebServices;
- 
  
 /**
-  * A simple web server using Sparkweb
-  * @author dnielben
+  * web server usoing Sparkweb
+  * @author Ricar
   */
 
  public class SparkWebServer {
@@ -15,7 +14,7 @@ import co.edu.escuelaing.sparkdocker.services.SparkWebServices;
         staticFileLocation("/public");
         port(getPort());
         get("hello", (req,res) -> "Hello Docker! :)");
-        SparkWebServices sparkWebServices = new SparkWebServices();
+        MessageService sparkMessageService = new MessageService();
      }
  
     private static int getPort() {
