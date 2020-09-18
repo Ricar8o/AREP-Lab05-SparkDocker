@@ -1,6 +1,7 @@
 version: '2'
 services:
     round_robin:
+        image: sparkdocker_round_robin
         build:
             context: .
             dockerfile: DockerFile2
