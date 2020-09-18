@@ -37,7 +37,7 @@ public class MessageService {
      * 
      * @param req Request
      * @param res Response
-     * @return Todos los mensajes en formato JSON
+     * @return respues de la inserción.
      */
     public String insertMessage(Request req, Response res) {
         JsonObject json = (JsonObject) JsonParser.parseString(req.body());
@@ -52,7 +52,7 @@ public class MessageService {
      * 
      * @param res
      * @param req
-     * @return
+     * @return Todos los mensajes en formato JSON
      */
     private JsonObject getMessages(Request req, Response res) {
         res.type("application/json");

@@ -1,5 +1,15 @@
 version: '2'
 services:
+    round_robin:
+        build:
+            context: .
+            dockerfile: DockerFile2
+        container_name: round_robin
+        networks:
+            net:
+                ipv4_address: 172.24.0.6
+        ports:
+            - "35004:6000"
     web1:
         image: sparkdocker
         container_name: web1
