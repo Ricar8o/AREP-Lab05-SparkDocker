@@ -4,7 +4,7 @@ services:
         image: sparkdocker_round_robin
         build:
             context: .
-            dockerfile: DockerFile2
+            dockerfile: Dockerfile2
         container_name: round_robin
         networks:
             net:
