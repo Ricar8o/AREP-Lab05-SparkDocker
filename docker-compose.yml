@@ -10,7 +10,7 @@ services:
             net:
                 ipv4_address: 172.24.0.6
         ports:
-            - "80:6000"
+            - "35004:6000"
     web1:
         image: sparkdocker
         container_name: web1
