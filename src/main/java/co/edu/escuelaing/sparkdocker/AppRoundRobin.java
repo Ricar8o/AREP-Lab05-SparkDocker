@@ -38,7 +38,7 @@ public class AppRoundRobin {
      * 
      * @param args lista de ips a los que se puede consultar
      */
-    private static void loadIps(String[] args) {
+    public static void loadIps(String[] args) {
         for (String s : args) {
             ips.add(s);
         }
@@ -51,7 +51,7 @@ public class AppRoundRobin {
      * @param res Response
      * @return respuesta de la inserción.
      */
-    private static String insertMessage(Request req, Response res) {
+    public static String insertMessage(Request req, Response res) {
         String url = "http://" + ips.get(flag) + "/api/v1/setMessage";
         flag = (flag + 1) % ips.size();
         String cadena = null;
@@ -65,12 +65,11 @@ public class AppRoundRobin {
 
     /**
      * Pide todos los mensajes en formato JSON.
-     * 
-     * @param res
-     * @param req
+     * @param req Request
+     * @param res Response
      * @return Todos los mensajes en formato JSON
      */
-    private static JsonObject getMessages(Request req, Response res) {
+    public static JsonObject getMessages(Request req, Response res) {
         String url = "http://" + ips.get(flag) + "/api/v1/getMessages";
         flag = (flag + 1) % ips.size();
         JsonObject json = null;
@@ -82,7 +81,15 @@ public class AppRoundRobin {
         }
         return json;
     }
-
+    
+    /**
+     * Metodo que envia el mensaje a alguna de las "maquinas" conectada a la base de datos.
+     * @param url url de la maquina a que enviara la petición.
+     * @param req Request
+     * @param res Response
+     * @return respuesta del la solicitud remota
+     * @throws IOException En el caso de que haya un problema de conexión o con la Url.
+     */
     private static String makeInsertMessage(String url,Request req, Response res) throws IOException {
         System.out.println(url);
         URL obj = new URL(url);
@@ -104,7 +111,12 @@ public class AppRoundRobin {
             return response.toString();
         }
     }
-
+    /**
+     * Metodo que pide todos los mensajes en la base de datos.
+     * @param url url de la maquina a que enviara la petición.
+     * @return respuesta del la solicitud remota
+     * @throws IOException En el caso de que haya un problema de conexión o con la Url.
+     */
     private static JsonObject makeGetMessages(String url) throws IOException {
         System.out.println(url);
         URL obj = new URL(url);
@@ -129,6 +141,10 @@ public class AppRoundRobin {
 		}
     }
 
+    /**
+     * Mira si ya hay un puerto definido, si no entonces usara el puerto 4567.
+     * @return Puerto del servicio.
+     */
     private static int getPort() {
          if (System.getenv("PORT") != null) {
              return Integer.parseInt(System.getenv("PORT"));

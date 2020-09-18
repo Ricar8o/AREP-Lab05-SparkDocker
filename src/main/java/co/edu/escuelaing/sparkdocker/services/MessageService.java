@@ -1,6 +1,6 @@
 package co.edu.escuelaing.sparkdocker.services;
 
-import co.edu.escuelaing.sparkdocker.Mongo.MongoServices;
+import co.edu.escuelaing.sparkdocker.mongo.MongoServices;
 import static spark.Spark.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -37,7 +37,7 @@ public class MessageService {
      * 
      * @param req Request
      * @param res Response
-     * @return respues de la inserción.
+     * @return respuesta de la inserción.
      */
     public String insertMessage(Request req, Response res) {
         JsonObject json = (JsonObject) JsonParser.parseString(req.body());
@@ -50,11 +50,11 @@ public class MessageService {
     /**
      * Pide todos los mensajes en formato JSON.
      * 
-     * @param res
-     * @param req
+     * @param req Request
+     * @param res Response
      * @return Todos los mensajes en formato JSON
      */
-    private JsonObject getMessages(Request req, Response res) {
+    public JsonObject getMessages(Request req, Response res) {
         res.type("application/json");
         return mongoServices.getMessages();
     }

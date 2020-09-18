@@ -1,4 +1,4 @@
-package co.edu.escuelaing.sparkdocker.Mongo;
+package co.edu.escuelaing.sparkdocker.mongo;
 
 import java.util.Iterator;
 

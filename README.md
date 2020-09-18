@@ -84,12 +84,6 @@ Para generar la documentacion con Maven puede ejecutar cualquiera de los siguien
 *        mvn javadoc:javadoc
 *        mvn javadoc:jar
 
-
-### Java
-Si quiere generarla usando java puede hacerlo con el siguiente comando.
-
-*       javadoc -d docs src\main\java\co\edu\escuelaing\arep\sparkr\*.java src\main\java\co\edu\escuelaing\arep\sparkr\httpserver\*.java
-
 ## PDF Diseño
 
 [Arep_Lab_5.PDF](Arep_Lab_5.pdf)
