@@ -1,5 +1,6 @@
 package co.edu.escuelaing.sparkdocker.mongo;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import com.google.gson.JsonArray;
@@ -17,13 +18,15 @@ import org.bson.Document;
 public class MongoServices {
     private MongoClient mongoClient;
     private MongoDatabase database;
+    private long maxMessages;
 
     /**
      * Constructor
      * @param host host de la base de datos.
      * @param port puerto de la base de datos.
      */
-    public MongoServices(String host, int port) {
+    public MongoServices(String host, int port, long maxM) {
+        this.maxMessages = maxM;
         // Creating a Mongo client
         mongoClient = new MongoClient(host, port);
         database = mongoClient.getDatabase("arepDockerDB");
@@ -35,7 +38,8 @@ public class MongoServices {
      */
     public void insertMessage(String user, String message) {
         MongoCollection<Document> collection = database.getCollection("messages");
-        Document document = new Document("user", user).append("content", message);
+        Date fechaActual = new Date(); 
+        Document document = new Document("user", user).append("content", message).append("date", fechaActual);
 
         // Inserting document into the collection
         collection.insertOne(document);
@@ -47,7 +51,8 @@ public class MongoServices {
      */
     public JsonObject getMessages() {
         MongoCollection<Document> collection = database.getCollection("messages");
-        FindIterable<Document> iterDoc = collection.find();
+        int num = (int) (collection.countDocuments() - maxMessages);
+        FindIterable<Document> iterDoc = collection.find().skip(num);
         // Getting the iterator
         Iterator<Document> it = iterDoc.iterator();
         JsonArray jArray = new JsonArray();
@@ -58,6 +63,7 @@ public class MongoServices {
             jsonObject.addProperty("Id", doc.get("_id").toString());
             jsonObject.addProperty("User", doc.get("user").toString());
             jsonObject.addProperty("Message", doc.get("content").toString());
+            jsonObject.addProperty("Date", doc.get("date").toString());
             jArray.add(jsonObject);
         }
         mensajes.add("Messages", jArray);

@@ -21,7 +21,7 @@ public class MessageService {
      */
     public MessageService() {
         loadToSpark();
-        mongoServices = new MongoServices("172.24.0.5", 27017);
+        mongoServices = new MongoServices("172.24.0.5", 27017, 10);
     }
 
     /**
