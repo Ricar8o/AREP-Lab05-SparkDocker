@@ -2,6 +2,11 @@
 La aplicacion consiste en un servicio llamado AppRoundRobin, este se encarga de recibir las peticiones del cliente y enviarlas al servicio REST. El servicio REST recibe la cadena e implementa un algoritmo de balanceo de cargas de Round Robin, delegando el procesamiento del mensaje y el retorno de la respuesta a cada una de las tres instancias del servicio SparkWebServer. El servicio SparkWebServer es quien se encarga de guardar y pedir datos de una base de datos MongoDB.
 El cliente solo puede acceder al servicio web que AppRoundRobin provee y esta desplegado en un contenedor docker en una instancia EC2 de AWS. Los demas servicios como el servidor web (SparkWebServer) y la base de datos solo pueden ser accedidos por contenedores de Docker dentro de la instancia EC2 y que compartan red. 
 
+## Conceptos
+
+### RoundRobin
+Round-robin es un método para seleccionar todos los abstractos en un grupo de manera equitativa y en un orden racional, normalmente comenzando por el primer elemento de la lista hasta llegar al último y empezando de nuevo desde el primer elemento.
+
 ## Comenzando 
 Para obtener una copia local del repositorio puede ejecutar la siguiente línea en la consola de comandos.
     
@@ -15,7 +20,7 @@ Debe tener instalado lo siguiente:
 * [JAVA 8](https://www.java.com/es/download/)
 * [MAVEN](https://maven.apache.org)
 * [DOCKER](https://www.docker.com/)
-* DOCKER-COMPOSE - Viene incluido en Docker Desktop, sin embargo si no lo tiene, puede ver como instalarlo [AQUI](https://docs.docker.com/compose/install/).
+* **DOCKER-COMPOSE** - Viene incluido en Docker Desktop, sin embargo si no lo tiene, puede ver como instalarlo [AQUI](https://docs.docker.com/compose/install/).
 
 GIT no es completamente necesario pero si es recomendable, también puede descargar el repositorio como un .zip.
 
@@ -76,7 +81,6 @@ Para los servicios web esta clase usa el FrameworkSpark
 
 ### Ejecucion en Docker
 
-        docker build . --tag sparkdocker
         docker-compose build
         docker-compose up -d
 
@@ -84,7 +88,7 @@ Estos tres comandos se encuentran en el archivo [commands.txt](commands.txt), de
 
         sh commands.txt
 
-En Docker la aplicación siempre se ejecutara por el puerto 35004. 
+En Docker la aplicación siempre se ejecutara por el puerto 35004 del host. 
 
 En el archivo [docker-compose.yml](docker-compose.yml) están las ip y los puertos de cada uno de los contenedores, se ve que solo el contenedor de AppRoundRobin tiene mapeado su puerto 6000 en el contenedor con el 35004 de la maquina donde se este ejecutando.
 
@@ -105,7 +109,7 @@ Después de enviar la información, en formulario mandara una solicitud post al 
 Para ver los últimos 10 mensajes guardados en la base de datos hay que hacer click en el botón que dice: "Ver mensajes". Entonces el servicio Rest pedira los mensajes a alguna de las instancias y redirigira a la url del API con los mensajes en formato JSON.
 
 ![mensajes1.jpg](img/mensajesF.jpg)
-Se ven asi, ya que FireFox tiene un visor de JSON. Para verlos de una manera más cómoda.
+Se ven asi, ya que Firefox tiene un visor de JSON. Para verlos de una manera más cómoda.
 
 Sin el visor, el JSON se mostrará así:
 

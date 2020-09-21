@@ -8,33 +8,36 @@ services:
         container_name: round_robin
         networks:
             net:
-                ipv4_address: 172.24.0.6
+                ipv4_address: 102.24.0.6
         ports:
             - "35004:6000"
     web1:
         image: sparkdocker
+        build:
+            context: .
+            dockerfile: Dockerfile
         container_name: web1
         networks:
             net:
-                ipv4_address: 172.24.0.2
+                ipv4_address: 102.24.0.2
     web2:
         image: sparkdocker
         container_name: web2
         networks:
             net:
-              ipv4_address: 172.24.0.3
+              ipv4_address: 102.24.0.3
     web3:
         image: sparkdocker
         container_name: web3
         networks:
             net:
-                ipv4_address: 172.24.0.4
+                ipv4_address: 102.24.0.4
     db:
         image: mongo:3.6.1
         container_name: db
         networks:
             net:
-                ipv4_address: 172.24.0.5
+                ipv4_address: 102.24.0.5
         volumes:
             - mongodb:/data/db
             - mongodb_config:/data/configdb
@@ -44,7 +47,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 172.24.0.0/16     
+                - subnet: 102.24.0.0/16     
 volumes:
     mongodb:
     mongodb_config:
