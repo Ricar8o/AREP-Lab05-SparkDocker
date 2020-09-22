@@ -1,11 +1,14 @@
 # AREP - Laboratorio #5
-La aplicacion consiste en un servicio llamado AppRoundRobin, este se encarga de recibir las peticiones del cliente y enviarlas al servicio REST. El servicio REST recibe la cadena e implementa un algoritmo de balanceo de cargas de Round Robin, delegando el procesamiento del mensaje y el retorno de la respuesta a cada una de las tres instancias del servicio SparkWebServer. El servicio SparkWebServer es quien se encarga de guardar y pedir datos de una base de datos MongoDB.
+La aplicación consiste en un servicio llamado AppRoundRobin, este se encarga de recibir las peticiones del cliente y enviarlas al servicio REST. El servicio REST recibe la cadena e implementa un algoritmo de balanceo de cargas de Round Robin, delegando el procesamiento del mensaje y el retorno de la respuesta a cada una de las tres instancias del servicio SparkWebServer. El servicio SparkWebServer es quien se encarga de guardar y pedir datos de una base de datos MongoDB.
 El cliente solo puede acceder al servicio web que AppRoundRobin provee y esta desplegado en un contenedor docker en una instancia EC2 de AWS. Los demas servicios como el servidor web (SparkWebServer) y la base de datos solo pueden ser accedidos por contenedores de Docker dentro de la instancia EC2 y que compartan red. 
 
 ## Conceptos
 
 ### RoundRobin
 Round-robin es un método para seleccionar todos los abstractos en un grupo de manera equitativa y en un orden racional, normalmente comenzando por el primer elemento de la lista hasta llegar al último y empezando de nuevo desde el primer elemento.
+
+### Docker
+Docker", el software de TI, es una tecnología de creación de contenedores que permite la creación y el uso de contenedores de Linux®. Con docker, puede usar los contenedores como máquinas virtuales extremadamente livianas y modulares.
 
 ## Comenzando 
 Para obtener una copia local del repositorio puede ejecutar la siguiente línea en la consola de comandos.
@@ -44,7 +47,7 @@ Para compilar el proyecto podemos ejecutar varias opciones.
 En este repositorio hay dos clases principales [SparkWebServer.java](src/main/java/co/edu/escuelaing/sparkdocker/SparkWebServer.java)
 y [AppRoundRobin.java](src/main/java/co/edu/escuelaing/sparkdocker/AppRoundRobin.java).
 
-IMPORTANTE! - Antes de cualquier ejecucion asegurese de haber compilado o ejecutado mvn clean install.
+IMPORTANTE! - Antes de cualquier ejecución asegurese de haber compilado o ejecutado mvn clean install.
 
 ### Ejecuciones basicas de las clases.
 
@@ -96,6 +99,11 @@ En el archivo [docker-compose.yml](docker-compose.yml) están las ip y los puert
 SparkWebServer se construye apartir del archivo [Dockerfile](Dockerfile)
 AppRoundRobin se construye apartir del archivo [Dockerfile2](Dockerfile2)
 
+**Distribución de los contenedores en Docker:**
+
+sparkdockerNetwork es la red que comparten dentro de docker los contenedores.
+
+![diagrama3.jpg](img/diagrama3.jpg)
 
 #### Demostración Local
 Al construir y tener iniciados los contenedores en docker con cada una de las instacias, podremos acceder a una pagina de inicio en [localhost:35004](http://localhost:35004), esta tiene un formulario con tres opciones, enviar el mensaje, ver los mensajes y limpiar la información del formulario.
@@ -109,7 +117,7 @@ Después de enviar la información, en formulario mandara una solicitud post al 
 Para ver los últimos 10 mensajes guardados en la base de datos hay que hacer click en el botón que dice: "Ver mensajes". Entonces el servicio Rest pedira los mensajes a alguna de las instancias y redirigira a la url del API con los mensajes en formato JSON.
 
 ![mensajes1.jpg](img/mensajesF.jpg)
-Se ven asi, ya que Firefox tiene un visor de JSON. Para verlos de una manera más cómoda.
+Se ven así, ya que Firefox tiene un visor de JSON. Para verlos de una manera más cómoda.
 
 Sin el visor, el JSON se mostrará así:
 
@@ -129,7 +137,25 @@ Ahora si pedimos los mensajes vemos que no esta el primer mensaje, ya que solo d
 
 #### Demostración AWS
 
+Contenedores creados en instancia EC2 de AWS.
 
+![aws1.jpg](img/aws1.jpg)
+
+![aws2.jpg](img/aws2.jpg)
+
+Primer mensaje enviado a la base de datos.
+
+![aws2.jpg](img/aws3.jpg)
+
+![aws2.jpg](img/aws4.jpg)
+
+Al hacer **docker network inspect** en la red de los contenedores se puede observar que estan asignadas segun el docker-compose
+
+![aws2.jpg](img/aws5.jpg)
+
+Mirando los logs del contenedor round_robin vemos que está haciendo el balanceo de carga.
+
+![aws2.jpg](img/aws6.jpg)
 
 ## Despliegue Circleci
 
